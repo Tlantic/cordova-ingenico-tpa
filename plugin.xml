@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    id="com.tlantic.plugins.pinpad"
+    version="0.3.2">
+    <name>Pinpad</name>
+    <description>Tlantic Pinpadplugin</description>
+    <license>GPL</license>
+    <keywords>cordova, tcp, socket</keywords>
+
+    <js-module src="www/pinpad.js" name="Pinpad">
+        <clobbers target="window.tlantic.plugins.pinpad" />
+    </js-module>
+
+
+   <!-- windows8 -->
+    <platform name="windows8">
+        <js-module src="src/windows8/Connection.js" name="Connection">
+            <merges target="" />
+        </js-module>
+        <js-module src="src/windows8/PinPadProxy.js" name="PinPadProxy">
+            <merges target="" />
+        </js-module>
+        <config-file target="package.appxmanifest" parent="/Package/Capabilities">
+            <Capability Name="internetClientServer" />
+            <Capability Name="privateNetworkClientServer" />
+            <Capability Name="internetClient" />
+        </config-file>
+    </platform>
+
+</plugin>
