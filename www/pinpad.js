@@ -1,7 +1,7 @@
 var exec = require('cordova/exec');
 
 //
-function PinPad(){
+function PinPad() {
     'use strict';
 
     this.receiveHookName = 'PINPAD_RECEIVE_DATA_HOOK';      // *** Event name to act as "hook" for data receiving
@@ -22,7 +22,7 @@ PinPad.prototype.disconnect = function (successCallback, errorCallback, connecti
 };
 
 //
-PinPad.prototype.isConnected = function (connectionId, successCallback, errorCallback) {
+PinPad.prototype.isConnected = function (successCallback, errorCallback, connectionId) {
     'use strict';
     exec(successCallback, errorCallback, this.pluginRef, 'isConnected', [connectionId]);
 };
@@ -90,7 +90,6 @@ PinPad.prototype.privateLabel = function (successCallback, errorCallback, connec
     'use strict';
     exec(successCallback, errorCallback, this.pluginRef, 'privateLabel', [connectionId]);
 };
-
 
 
 //
