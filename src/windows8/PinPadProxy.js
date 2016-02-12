@@ -11,7 +11,35 @@ exports.buildKey = function (host, port) {
     return host.toLowerCase() + ':' + port;
 };
 
-exports.buidRequest = function (ConnectionId, OperationType, Service, Amount, ExtraData, RFU, Name) {
+//
+exports.buildResponseData = function (data) {
+    var _data = new Uint8Array(data);
+    var hexEncodeArray = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'];
+
+    var rawReceivedData = '';
+    var responseFields = [''];
+
+    _data.forEach(function (elm) {
+        var hexToken = hexEncodeArray[elm >>> 4].concat(hexEncodeArray[elm & 0x0F]);
+        rawReceivedData += hexToken.concat(' ');
+        if (hexToken === '1E') {
+            responseFields.push('');
+        }
+        else {
+            responseFields[responseFields.length - 1] += elm < 32 ? '.' : String.fromCharCode(elm);
+        }
+    });
+
+    return {
+        returnCode: parseInt(responseFields[0]),
+        merchantReceipt: responseFields[1] || null,
+        clientReceipt: responseFields[2] || null,
+        extraData: responseFields[3] || null,
+        rawReceivedData: rawReceivedData
+    };
+};
+
+exports.buildRequest = function (ConnectionId, OperationType, Service, Amount, ExtraData, RFU, Name) {
     var data = {
         "OperationType": OperationType,
         "Amount": Amount,
@@ -51,7 +79,7 @@ exports.connect = function (win, fail, args) {
             // creating new connection;
             socket = new Connection(host, port);
             socket.onReceive = exports.sendMessage;
-            socket.onConnectinLost = exports.connectionLost;
+            socket.onConnectionLost = exports.connectionLost;
 
             // opening stream
             socket.connect(function () {
@@ -188,7 +216,7 @@ exports.status = function (win, fail, args) {
         return;
 
     } else {
-        var request = exports.buidRequest(args[0], "N", false, "000000000", "00000000000000000000000 ", "", "Status Command");
+        var request = exports.buildRequest(args[0], "N", false, "000000000", "00000000000000000000000 ", "", "Status Command");
         exports.send(win, fail, request);
     }
 };
@@ -199,7 +227,7 @@ exports.communicationTest = function (win, fail, args) {
         return;
 
     } else {
-        var request = exports.buidRequest(args[0], "C", false, "000000000", "00000000000000000000000 ", "", "Communication Test");
+        var request = exports.buildRequest(args[0], "C", false, "000000000", "00000000000000000000000 ", "", "Communication Test");
         exports.send(win, fail, request);
     }
 };
@@ -210,7 +238,7 @@ exports.purchase = function (win, fail, args) {
         return;
 
     } else {
-        var request = exports.buidRequest(args[0], "S", false, args[1], "00000000000000000000000 ", "", "Purchase");
+        var request = exports.buildRequest(args[0], "S", false, args[1], "00000000000000000000000 ", "", "Purchase");
         exports.send(win, fail, request);
     }
 };
@@ -221,7 +249,7 @@ exports.characteristics = function (win, fail, args) {
         return;
 
     } else {
-        var request = exports.buidRequest(args[0], "?", false, "000000000", "00000000000000000000000 ", "", "Pinpad Characteristics");
+        var request = exports.buildRequest(args[0], "?", false, "000000000", "00000000000000000000000 ", "", "Pinpad Characteristics");
         exports.send(win, fail, request);
     }
 };
@@ -232,7 +260,7 @@ exports.open = function (win, fail, args) {
         return;
 
     } else {
-        var request = exports.buidRequest(args[0], "O", false, "000000000", "00000000000000000000000 ", "", "TPA Activate");
+        var request = exports.buildRequest(args[0], "O", false, "000000000", "00000000000000000000000 ", "", "TPA Activate");
         exports.send(win, fail, request);
     }
 };
@@ -243,7 +271,7 @@ exports.close = function (win, fail, args) {
         return;
 
     } else {
-        var request = exports.buidRequest(args[0], "V", false, "000000000", "00000000000000000000000 ", "", "TPA Deactivate");
+        var request = exports.buildRequest(args[0], "V", false, "000000000", "00000000000000000000000 ", "", "TPA Deactivate");
         exports.send(win, fail, request);
     }
 };
@@ -254,7 +282,7 @@ exports.openAndClose = function (win, fail, args) {
         return;
 
     } else {
-        var request = exports.buidRequest(args[0], "W", false, "000000000", "00000000000000000000000 ", "", "Totais TPA");
+        var request = exports.buildRequest(args[0], "W", false, "000000000", "00000000000000000000000 ", "", "Totais TPA");
         exports.send(win, fail, request);
     }
 };
@@ -265,7 +293,7 @@ exports.maintenance = function (win, fail, args) {
         return;
 
     } else {
-        var request = exports.buidRequest(args[0], "F", false, "000000000", "00000000000000000000000 ", "", "maintenance TPA");
+        var request = exports.buildRequest(args[0], "F", false, "000000000", "00000000000000000000000 ", "", "maintenance TPA");
         exports.send(win, fail, request);
     }
 };
@@ -276,7 +304,7 @@ exports.lastPosTransaction = function (win, fail, args) {
         return;
 
     } else {
-        var request = exports.buidRequest(args[0], "I", false, "000000000", "00000000000000000000000 ", "", "Inquiry Last POS Transaction");
+        var request = exports.buildRequest(args[0], "I", false, "000000000", "00000000000000000000000 ", "", "Inquiry Last POS Transaction");
         exports.send(win, fail, request);
     }
 };
@@ -287,7 +315,7 @@ exports.openSuperVisorMenu = function (win, fail, args) {
         return;
 
     } else {
-        var request = exports.buidRequest(args[0], "H", false, "000000000", "00000000000000000000000 ", "", "Open Supervisor Menu");
+        var request = exports.buildRequest(args[0], "H", false, "000000000", "00000000000000000000000 ", "", "Open Supervisor Menu");
         exports.send(win, fail, request);
     }
 };
@@ -299,7 +327,7 @@ exports.localData = function (win, fail, args) {
         return;
 
     } else {
-        var request = exports.buidRequest(args[0], "L", false, "000000000", "00000000000000000000000 ", "", "Open Supervisor Menu");
+        var request = exports.buildRequest(args[0], "L", false, "000000000", "00000000000000000000000 ", "", "Open Supervisor Menu");
         exports.send(win, fail, request);
     }
 };
@@ -310,7 +338,7 @@ exports.readMagneticStripe = function (win, fail, args) {
         return;
 
     } else {
-        var request = exports.buidRequest(args[0], "M", false, "000000000", "00000000000000000000000 ", "", "Read Magnetic Stripe");
+        var request = exports.buildRequest(args[0], "M", false, "000000000", "00000000000000000000000 ", "", "Read Magnetic Stripe");
         exports.send(win, fail, request);
     }
 };
@@ -322,7 +350,7 @@ exports.repeatLastReceipt = function (win, fail, args) {
         return;
 
     } else {
-        var request = exports.buidRequest(args[0], "Z", false, "000000000", "00000000000000000000000 ", "", "Repeat Last Receipt");
+        var request = exports.buildRequest(args[0], "Z", false, "000000000", "00000000000000000000000 ", "", "Repeat Last Receipt");
         exports.send(win, fail, request);
     }
 };
@@ -333,18 +361,18 @@ exports.privateLabel = function (win, fail, args) {
         return;
 
     } else {
-        var request = exports.buidRequest(args[0], "P", false, "000000000", agrs[1] + "00000000000000000000   ", "", "Private Label");
+        var request = exports.buildRequest(args[0], "P", false, "000000000", agrs[1] + "00000000000000000000   ", "", "Private Label");
         exports.send(win, fail, request);
     }
 };
-
 
 // callback to receive data written on socket inputStream
 exports.sendMessage = function (host, port, data) {
 
     var key = exports.buildKey(host, port);
+    var _data = exports.buildResponseData(data);
 
-    window.tlantic.plugins.pinpad.receive(host, port, key, data);
+    window.tlantic.plugins.pinpad.receive(host, port, key, _data);
 };
 
 

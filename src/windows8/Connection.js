@@ -30,7 +30,7 @@ module.exports = function Connection(host, port) {
             try {
                 // opening inputStream for reading
                 reader = new Windows.Storage.Streams.DataReader(rawSocket.inputStream);
-                reader.inputStreamOptions = Windows.Storage.Streams.InputStreamOptions.partial;
+                //reader.inputStreamOptions = Windows.Storage.Streams.InputStreamOptions.partial;
 
                 // start reading
                 self.startReader();
@@ -77,50 +77,39 @@ module.exports = function Connection(host, port) {
 
     // Socket start receiving data
     self.startReader = function startReader() {
-
-
-        return reader.loadAsync(9999).done(function (bytesRead) {
-
-            // reading buffer
-            var chunk;
-
-            try {
-                if (bytesRead === 0) {
-                    self.onConnectinLost({closeOk: false});
-                }
-                else {
-
-                    var strLength = reader.readInt32();
-
-                    chunk = reader.readString(reader.unconsumedBufferLength);
-
-                    // handling data receiving
-                    if (bytesRead !== 0 && !mustClose) {
-                        self.onReceive(self.host, self.port, chunk);
-                    }
-
-                    // checking reading ending
-                    if (mustClose) {
-                        return;
-                    } else {
-                        return startReader();
-                    }
-                }
-
-            } catch (e) {
-                console.log('Unexpected connection closure with ', self.host, ' on port ', self.port, ': ', e);
-                mustClose = true;
-                self.onConnectinLost();
-                return;
-            }
-        }, function (err) {
+        var onErrorFn = function (err) {
             var socketErrorStatus = Windows.Networking.Sockets.SocketError.getStatus(err.number);
 
             if (socketErrorStatus === 1)
-                self.onConnectinLost({closeOk: true});
+                self.onConnectionLost({closeOk: true});
             else
-                self.onConnectinLost({closeOk: false, socketErrorStatus: socketErrorStatus});
-        });
+                self.onConnectionLost({closeOk: false, socketErrorStatus: socketErrorStatus});
+        };
+
+        reader.loadAsync(4).done(function onSuccess(stringHeader) {
+            if (stringHeader === 0) {
+                self.onConnectionLost({closeOk: false});
+                return;
+            }
+
+            var strLength = reader.readInt32();
+
+            reader.loadAsync(strLength).done(function onSuccess(numStrBytes) {
+
+                // handling data receiving
+                if (numStrBytes !== 0 && !mustClose) {
+                    self.onReceive(self.host, self.port, reader.readBuffer(numStrBytes));
+                }
+
+                // checking reading ending
+                if (mustClose) {
+                    return;
+                } else {
+                    return startReader();
+                }
+            }, onErrorFn);
+
+        }, onErrorFn);
     };
 
     // Socket data receiving
@@ -128,7 +117,7 @@ module.exports = function Connection(host, port) {
         console.log('no callback defined for Socket.OnReceive!');
     };
 
-    self.onConnectinLost = function onConnectinLost() {
+    self.onConnectionLost = function onConnectionLost() {
         console.log('no callback defined for Socket.OnReceive!');
     };
 
