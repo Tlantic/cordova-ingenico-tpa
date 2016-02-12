@@ -19,7 +19,8 @@ exports.buildResponseData = function (data) {
     var rawReceivedData = '';
     var responseFields = [''];
 
-    _data.forEach(function (elm) {
+    for (var i = 0; i < _data.length; i++) {
+        var elm = _data[i];
         var hexToken = hexEncodeArray[elm >>> 4].concat(hexEncodeArray[elm & 0x0F]);
         rawReceivedData += hexToken.concat(' ');
         if (hexToken === '1E') {
@@ -28,7 +29,7 @@ exports.buildResponseData = function (data) {
         else {
             responseFields[responseFields.length - 1] += elm < 32 ? '.' : String.fromCharCode(elm);
         }
-    });
+    }
 
     return {
         returnCode: parseInt(responseFields[0]),
