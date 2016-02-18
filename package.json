@@ -1,5 +1,5 @@
 {
-    "version": "0.4.1",
+    "version": "0.4.2",
     "name": "com.tlantic.plugins.pinpad",
     "cordova_name": "Socket",
     "description": "Tlantic TCP socket plugin",
