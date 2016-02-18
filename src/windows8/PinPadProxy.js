@@ -26,6 +26,9 @@ exports.buildResponseData = function (data) {
         if (hexToken === '1E') {
             responseFields.push('');
         }
+        else if(hexToken === '0A'){
+            responseFields[responseFields.length - 1] += '\n';
+        }
         else {
             responseFields[responseFields.length - 1] += elm < 32 ? '.' : String.fromCharCode(elm);
         }
