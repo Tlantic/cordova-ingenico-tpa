@@ -36,8 +36,8 @@ exports.buildResponseData = function (data) {
 
     return {
         returnCode: parseInt(responseFields[0]),
-        merchantReceipt: responseFields[1] || null,
-        clientReceipt: responseFields[2] || null,
+        clientReceipt: responseFields[1] || null,
+        merchantReceipt: responseFields[2] || null,
         extraData: responseFields[3] || null,
         rawReceivedData: rawReceivedData
     };
