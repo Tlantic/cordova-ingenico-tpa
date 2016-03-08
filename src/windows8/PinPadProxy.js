@@ -328,11 +328,22 @@ exports.openSuperVisorMenu = function (win, fail, args) {
 
 exports.localData = function (win, fail, args) {
     if (args.length !== 1) {
-        fail('Missing arguments for "characteristics" action.');
+        fail('Missing arguments for "localData" action.');
         return;
 
     } else {
-        var request = exports.buildRequest(args[0], "L", false, "000000000", "00000000000000000000000 ", "", "Open Supervisor Menu");
+        var request = exports.buildRequest(args[0], "L", false, "000000000", "00000000000000000000000 ", "", "Local Data");
+        exports.send(win, fail, request);
+    }
+};
+
+exports.paymentCodes = function (win, fail, args) {
+    if (args.length !== 1) {
+        fail('Missing arguments for "paymentCodes" action.');
+        return;
+
+    } else {
+        var request = exports.buildRequest(args[0], "L", false, "00000100", "70000000000000000000000 ", "", "Payment Codes");
         exports.send(win, fail, request);
     }
 };

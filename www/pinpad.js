@@ -81,6 +81,16 @@ PinPad.prototype.openSuperVisorMenu = function (successCallback, errorCallback, 
     exec(successCallback, errorCallback, this.pluginRef, 'openSuperVisorMenu', [connectionId]);
 };
 
+PinPad.prototype.localData = function (successCallback, errorCallback, connectionId) {
+    'use strict';
+    exec(successCallback, errorCallback, this.pluginRef, 'localData', [connectionId]);
+};
+
+PinPad.prototype.paymentCodes = function (successCallback, errorCallback, connectionId) {
+    'use strict';
+    exec(successCallback, errorCallback, this.pluginRef, 'paymentCodes', [connectionId]);
+};
+
 PinPad.prototype.readMagneticStripe = function (successCallback, errorCallback, connectionId) {
     'use strict';
     exec(successCallback, errorCallback, this.pluginRef, 'readMagneticStripe', [connectionId]);
