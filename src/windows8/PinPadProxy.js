@@ -26,7 +26,8 @@ exports.buildResponseData = function (data) {
         if (hexToken === '1E') {
             responseFields.push('');
         }
-        else if(hexToken === '0A'){
+        // Do not substitute in extraData responseFields
+        else if(hexToken === '0A' && responseFields.length < 3){
             responseFields[responseFields.length - 1] += '\n';
         }
         else {
