@@ -94,6 +94,11 @@ module.exports = function Connection(host, port) {
 
             var strLength = reader.readInt32();
 
+            if (strLength === 0) {
+                self.onConnectionLost({closeOk: false});
+                return;
+            }
+
             reader.loadAsync(strLength).done(function onSuccess(numStrBytes) {
 
                 // handling data receiving
