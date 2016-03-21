@@ -372,7 +372,7 @@ exports.repeatLastReceipt = function (win, fail, args) {
 };
 
 exports.privateLabel = function (win, fail, args) {
-    if (args.length !== 2) {
+    if (args.length !== 3) {
         fail('Missing arguments for "privateLabel" action.');
         return;
 
