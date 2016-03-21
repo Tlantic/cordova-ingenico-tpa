@@ -96,9 +96,9 @@ PinPad.prototype.readMagneticStripe = function (successCallback, errorCallback, 
     exec(successCallback, errorCallback, this.pluginRef, 'readMagneticStripe', [connectionId]);
 };
 
-PinPad.prototype.privateLabel = function (successCallback, errorCallback, connectionId, paymentCode) {
+PinPad.prototype.privateLabel = function (successCallback, errorCallback, connectionId, ammount, paymentCode) {
     'use strict';
-    exec(successCallback, errorCallback, this.pluginRef, 'privateLabel', [connectionId, paymentCode]);
+    exec(successCallback, errorCallback, this.pluginRef, 'privateLabel', [connectionId, ammount, paymentCode]);
 };
 
 

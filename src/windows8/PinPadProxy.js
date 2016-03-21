@@ -221,7 +221,7 @@ exports.status = function (win, fail, args) {
         return;
 
     } else {
-        var request = exports.buildRequest(args[0], "N", false, "000000000", "00000000000000000000000 ", "", "Status Command");
+        var request = exports.buildRequest(args[0], "N", false, "000000000", "00000000000000000000000", "", "Status Command");
         exports.send(win, fail, request);
     }
 };
@@ -232,7 +232,7 @@ exports.communicationTest = function (win, fail, args) {
         return;
 
     } else {
-        var request = exports.buildRequest(args[0], "C", false, "000000000", "00000000000000000000000 ", "", "Communication Test");
+        var request = exports.buildRequest(args[0], "C", false, "000000000", "00000000000000000000000", "", "Communication Test");
         exports.send(win, fail, request);
     }
 };
@@ -243,7 +243,7 @@ exports.purchase = function (win, fail, args) {
         return;
 
     } else {
-        var request = exports.buildRequest(args[0], "S", false, args[1], "00000000000000000000000 ", "", "Purchase");
+        var request = exports.buildRequest(args[0], "S", false, args[1], "00000000000000000000000", "", "Purchase");
         exports.send(win, fail, request);
     }
 };
@@ -254,7 +254,7 @@ exports.characteristics = function (win, fail, args) {
         return;
 
     } else {
-        var request = exports.buildRequest(args[0], "?", false, "000000000", "00000000000000000000000 ", "", "Pinpad Characteristics");
+        var request = exports.buildRequest(args[0], "?", false, "000000000", "00000000000000000000000", "", "Pinpad Characteristics");
         exports.send(win, fail, request);
     }
 };
@@ -265,7 +265,7 @@ exports.open = function (win, fail, args) {
         return;
 
     } else {
-        var request = exports.buildRequest(args[0], "O", false, "000000000", "00000000000000000000000 ", "", "TPA Activate");
+        var request = exports.buildRequest(args[0], "O", false, "000000000", "00000000000000000000000", "", "TPA Activate");
         exports.send(win, fail, request);
     }
 };
@@ -276,7 +276,7 @@ exports.close = function (win, fail, args) {
         return;
 
     } else {
-        var request = exports.buildRequest(args[0], "V", false, "000000000", "00000000000000000000000 ", "", "TPA Deactivate");
+        var request = exports.buildRequest(args[0], "V", false, "000000000", "00000000000000000000000", "", "TPA Deactivate");
         exports.send(win, fail, request);
     }
 };
@@ -287,7 +287,7 @@ exports.openAndClose = function (win, fail, args) {
         return;
 
     } else {
-        var request = exports.buildRequest(args[0], "W", false, "000000000", "00000000000000000000000 ", "", "Totais TPA");
+        var request = exports.buildRequest(args[0], "W", false, "000000000", "00000000000000000000000", "", "Totais TPA");
         exports.send(win, fail, request);
     }
 };
@@ -298,7 +298,7 @@ exports.maintenance = function (win, fail, args) {
         return;
 
     } else {
-        var request = exports.buildRequest(args[0], "F", false, "000000000", "00000000000000000000000 ", "", "maintenance TPA");
+        var request = exports.buildRequest(args[0], "F", false, "000000000", "00000000000000000000000", "", "maintenance TPA");
         exports.send(win, fail, request);
     }
 };
@@ -309,7 +309,7 @@ exports.lastPosTransaction = function (win, fail, args) {
         return;
 
     } else {
-        var request = exports.buildRequest(args[0], "I", false, "000000000", "00000000000000000000000 ", "", "Inquiry Last POS Transaction");
+        var request = exports.buildRequest(args[0], "I", false, "000000000", "00000000000000000000000", "", "Inquiry Last POS Transaction");
         exports.send(win, fail, request);
     }
 };
@@ -320,7 +320,7 @@ exports.openSuperVisorMenu = function (win, fail, args) {
         return;
 
     } else {
-        var request = exports.buildRequest(args[0], "H", false, "000000000", "00000000000000000000000 ", "", "Open Supervisor Menu");
+        var request = exports.buildRequest(args[0], "H", false, "000000000", "00000000000000000000000", "", "Open Supervisor Menu");
         exports.send(win, fail, request);
     }
 };
@@ -332,7 +332,7 @@ exports.localData = function (win, fail, args) {
         return;
 
     } else {
-        var request = exports.buildRequest(args[0], "L", false, "000000000", "00000000000000000000000 ", "", "Local Data");
+        var request = exports.buildRequest(args[0], "L", false, "000000000", "00000000000000000000000", "", "Local Data");
         exports.send(win, fail, request);
     }
 };
@@ -343,7 +343,7 @@ exports.paymentCodes = function (win, fail, args) {
         return;
 
     } else {
-        var request = exports.buildRequest(args[0], "L", false, "00000100", "70000000000000000000000 ", "", "Payment Codes");
+        var request = exports.buildRequest(args[0], "L", false, "00000100", "70000000000000000000000", "", "Payment Codes");
         exports.send(win, fail, request);
     }
 };
@@ -354,7 +354,7 @@ exports.readMagneticStripe = function (win, fail, args) {
         return;
 
     } else {
-        var request = exports.buildRequest(args[0], "M", false, "000000000", "00000000000000000000000 ", "", "Read Magnetic Stripe");
+        var request = exports.buildRequest(args[0], "M", false, "000000000", "00000000000000000000000", "", "Read Magnetic Stripe");
         exports.send(win, fail, request);
     }
 };
@@ -366,7 +366,7 @@ exports.repeatLastReceipt = function (win, fail, args) {
         return;
 
     } else {
-        var request = exports.buildRequest(args[0], "Z", false, "000000000", "00000000000000000000000 ", "", "Repeat Last Receipt");
+        var request = exports.buildRequest(args[0], "Z", false, "000000000", "00000000000000000000000", "", "Repeat Last Receipt");
         exports.send(win, fail, request);
     }
 };
@@ -377,7 +377,7 @@ exports.privateLabel = function (win, fail, args) {
         return;
 
     } else {
-        var request = exports.buildRequest(args[0], "P", false, "000000000", args[1] + "00000000000000000000   ", "", "Private Label");
+        var request = exports.buildRequest(args[0], "p", false, args[1], args[2] + "00000000000000000000", "", "Private Label");
         exports.send(win, fail, request);
     }
 };
