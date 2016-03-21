@@ -377,7 +377,7 @@ exports.privateLabel = function (win, fail, args) {
         return;
 
     } else {
-        var request = exports.buildRequest(args[0], "P", false, "000000000", agrs[1] + "00000000000000000000   ", "", "Private Label");
+        var request = exports.buildRequest(args[0], "P", false, "000000000", args[1] + "00000000000000000000   ", "", "Private Label");
         exports.send(win, fail, request);
     }
 };
