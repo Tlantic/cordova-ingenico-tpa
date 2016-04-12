@@ -30,7 +30,7 @@ module.exports = function Connection(host, port) {
             try {
                 // opening inputStream for reading
                 reader = new Windows.Storage.Streams.DataReader(rawSocket.inputStream);
-                //reader.inputStreamOptions = Windows.Storage.Streams.InputStreamOptions.partial;
+                reader.inputStreamOptions = Windows.Storage.Streams.InputStreamOptions.partial;
 
                 // start reading
                 self.startReader();
@@ -94,25 +94,36 @@ module.exports = function Connection(host, port) {
 
             var strLength = reader.readInt32();
 
+            /**
             if (strLength === 0) {
                 self.onConnectionLost({closeOk: false});
                 return;
             }
+             **/
 
-            reader.loadAsync(strLength).done(function onSuccess(numStrBytes) {
+            if (strLength > 0) {
+                reader.loadAsync(strLength).done(function onSuccess(numStrBytes) {
 
-                // handling data receiving
-                if (numStrBytes !== 0 && !mustClose) {
-                    self.onReceive(self.host, self.port, reader.readBuffer(numStrBytes));
-                }
+                    // handling data receiving
+                    if (numStrBytes !== 0 && !mustClose) {
+                        self.onReceive(self.host, self.port, reader.readBuffer(numStrBytes));
+                    }
 
+                    // checking reading ending
+                    if (mustClose) {
+                        return;
+                    } else {
+                        return startReader();
+                    }
+                }, onErrorFn);
+            } else {
                 // checking reading ending
                 if (mustClose) {
                     return;
                 } else {
                     return startReader();
                 }
-            }, onErrorFn);
+            }
 
         }, onErrorFn);
     };
